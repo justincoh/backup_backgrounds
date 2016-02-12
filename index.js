@@ -3,7 +3,6 @@
 
 let fs = require('fs'),
     exec = require('child_process').exec,
-    zlib = require('zlib'),
     AWS = require('aws-sdk'),
     settings = require('./settings');
 
