@@ -1,2 +1,6 @@
 settings.js
+settings.py
 node_modules/
+*.swp
+lib/
+.DS_Store
