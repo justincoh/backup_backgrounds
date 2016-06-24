@@ -13,23 +13,25 @@ let awsParams = {
 }
 AWS.config.update(awsParams)
 let s3 = new AWS.S3();
-let backupName = "backup.tar.gz";
+let backupName = settings.key + ".tar.gz";
 
 let tarCommand = "tar -zcvf " + backupName + " " + settings.path + "Backgrounds";
 
 // Callback to be passed into success of upload
 let clean = function(){
-    exec("rm backup.tar.gz", (err, stdout, stdin)=>{
+    exec("rm "+backupName, (err, stdout, stdin)=>{
         if(err) return console.log('Something broke',err);
         console.log('DONE');
     });
 }
 
 // uploads stream to s3 bucket
-// should probably put in a progress log? took ~15 minutes at ~1.3 mb/s
 let sendIt = function(callback){
-    let stream = fs.createReadStream('./' + backupName).pipe(zlib.createGzip())
+    console.log('Creating Read Stream')
+    var stream = fs.createReadStream('./' + backupName)
+    
     let params = {Bucket: settings.bucket, Key: settings.key, Body: stream}
+    console.log('sending to aws')
 
     s3.upload(params, function(err, data) {
       if(err) return console.log("ERR ",err);
@@ -38,10 +40,10 @@ let sendIt = function(callback){
 
 }
 
-// where the magic happens
+//where the magic happens
 exec(tarCommand, (err, stdout, stdin) => {
     if(err) return console.log(err);
-
     sendIt(clean);
 });
+
 
