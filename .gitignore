@@ -2,6 +2,7 @@ settings.js
 settings.py
 node_modules/
 *.swp
+*.pyc
 lib/
 .DS_Store
 download/env
