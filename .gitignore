@@ -1,3 +1,6 @@
 settings.js
-settings.py
 node_modules/
+.env
+venv/
+.idea/
+__pycache__/
